@@ -32,8 +32,8 @@
         </el-row>
         <!-- 输入框 -->
         <el-row type="flex" align="middle" class="search-input">
-          <input :placeholder="options[current].placeholder" />
-          <i class="el-icon-search"></i>
+          <input :placeholder="options[current].placeholder" v-model="searchValue" @keyup.enter="handeleSearch"/>
+          <i class="el-icon-search" @click="handleSearch"></i>
         </el-row>
       </div>
     </div>
@@ -50,22 +50,29 @@ export default {
       options: [
         {
           title: "攻略",
-          placeholder: "请输入城市"
+          placeholder: "请输入城市",
+          pageUrl:'/post?city='
         },
         {
           title: "酒店",
-          placeholder: "请输入城市搜索酒店"
+          placeholder: "请输入城市搜索酒店",
+          pageUrl:'/hotel?city='
         },
         {
           title: "机票",
-          placeholder: ""
+          placeholder: "",
+          pageUrl:'/air'
         }
       ],
-      // 当前索引
-      current: 0
+      current: 0,// 当前索引
+      searchValue:"",// 搜索框的值
     };
   },
   methods: {
+    handleSearch(){
+      const item = this.options[this.current]
+      this.$router.push(item.pageUrl+this.searchValue)
+    },
     //点击搜索的tab栏触发
     handleClick(index) {
       // 点击索引是2时,表示点击了机票

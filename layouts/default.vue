@@ -1,25 +1,32 @@
 <template>
   <div>
-    <!-- 渲染头部组件 -->
-    <Header/>
-    <!-- 页面的占位符,类似于router-view -->
+    <!-- 头部组件 -->
+    <Header />
+    <!-- 内容占位组件 -->
     <nuxt />
+    <!-- 页脚组件 -->
+    <Footer />
   </div>
 </template>
+
 <script>
 // 导入头部组件
-import Header from '@/components/header'
+import Header from "@/components/header"
+// 导入页脚组件
+import Footer from "@/components/footer"
 export default {
   // 注册组件
-  components:{
-    Header
+  components: {
+    Header,
+    Footer
   }
 }
 </script>
-<style>
+
+<style lang="less">
 html {
-  font-family: 'Source Sans Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI',
-    Roboto, 'Helvetica Neue', Arial, sans-serif;
+  font-family: "Source Sans Pro", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, "Helvetica Neue", Arial, sans-serif;
   font-size: 16px;
   word-spacing: 1px;
   -ms-text-size-adjust: 100%;
@@ -28,22 +35,24 @@ html {
   -webkit-font-smoothing: antialiased;
   box-sizing: border-box;
 }
-*{
+
+* {
   margin: 0;
   padding: 0;
 }
-ul,li,ol{
+ul,
+li,
+ol {
   list-style: none;
 }
-a{
+a {
   text-decoration: none;
   color: inherit;
 }
-a:hover{
-  color: inherit;
+a:hover {
 }
-i,em{
+em,
+i {
   font-style: normal;
 }
-
 </style>

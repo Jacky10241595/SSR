@@ -40,19 +40,22 @@ export default {
     // 提交登录
     handleLoginSubmit() {
       // element-ui的验证表单的事件
-      this.$refs.form.validate(valid => {
+      this.$refs.form.validate((valid) => {
         // 当valid的值等于true说明表单验证通过
         if (valid) {
-          // 请求登录接口
-          this.$axios({
-            url: "/accounts/login",
-            method: "POST",
-            data: this.form
-          }).then(res => {
-            console.log(res)
-          })
+          this.$store.dispatch("user/login", this.form).then(res => {
+            // 成功提示
+            this.$message({
+              message: "登录成功,正在跳转",
+              type: "success"
+            });
+            // 跳转到首页
+            setTimeout(() => {
+              this.$router.replace("/");
+            }, 1000);
+          });
         } else {
-          console.log("验证失败")
+          console.log("验证失败");
         }
       });
     }

@@ -40,7 +40,7 @@ export default {
     // 提交登录
     handleLoginSubmit() {
       // element-ui的验证表单的事件
-      this.$refs.form.validate((valid) => {
+      this.$refs.form.validate(valid => {
         // 当valid的值等于true说明表单验证通过
         if (valid) {
           this.$store.dispatch("user/login", this.form).then(res => {

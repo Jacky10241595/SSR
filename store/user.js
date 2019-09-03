@@ -10,6 +10,14 @@ export const mutations = {
   // 保存用户信息到state
   setUserInfo(state, data) {
     state.userInfo = data;
+  },
+
+  //   清除用户数据
+  cleanUserInfo(state, info) {
+    if (process.browser) {
+      localStorage.removeItem('userInfo')
+    }
+    state.userInfo = {}
   }
 };
 export const actions = {
@@ -19,7 +27,7 @@ export const actions = {
   }, data) {
     return this.$axios({
       url: '/accounts/login',
-      method:'POST',
+      method: 'POST',
       data: data
     }).then(res => {
       const data = res.data;

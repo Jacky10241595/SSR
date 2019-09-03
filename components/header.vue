@@ -51,7 +51,14 @@
 export default {
     methods: {
         // 用户退出
-        handleLogout(){},
+        handleLogout(){
+            const {commit}=this.$store;
+            commit('user/cleanUserInfo');
+            this.$message({
+                message:'退出成功',
+                type:'success'
+            })
+        },
     }
 }
 </script>

@@ -23,6 +23,7 @@
 <script>
 // 导入登录组件
 import LoginForm from '@/components/user/loginForm'
+// 导入注册组件
 import RegisterForm from '@/components/user/registerForm'
 export default {
   data() {
@@ -33,8 +34,8 @@ export default {
   },
   // 注册组件
   components:{
-    LoginForm,
-    RegisterForm
+    LoginForm,// 登录组件
+    RegisterForm // 注册组件
   },
   methods:{
     // 点击tab栏触发

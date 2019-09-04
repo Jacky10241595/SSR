@@ -52,6 +52,7 @@ export default {
     methods: {
         // 用户退出
         handleLogout(){
+            // 清除登录信息
             const {commit}=this.$store;
             commit('user/cleanUserInfo');
             this.$message({

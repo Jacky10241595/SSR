@@ -39,7 +39,7 @@
       <el-form-item label>
         <el-button
           style="width:100%;"
-          type="primaary"
+          type="primary"
           icon="el-icon-search"
           @click="handleSubmit"
         >搜索</el-button>
@@ -88,95 +88,104 @@ export default {
 };
 </script>
 <style lang="less" scoped>
-.search-form {
-  border: 1px solid #ddd;
-  border-top: none;
-  width: 360px;
-  height: 35px;
-  box-sizing: border-box;
+.search-form{
+    border:1px #ddd solid;
+    border-top:none;
+    width:360px;
+    height:350px;
+    box-sizing: border-box;
 }
-.search-tab {
-  span {
+
+.search-tab{
+  span{
     display: block;
-    flex: 1;
+    flex:1;
     text-align: center;
-    height: 48px;
+    height:48px;
     line-height: 42px;
     box-sizing: border-box;
-    border-top: 3px solid #eee;
-    background: #eee;
+    border-top:3px #eee solid;
+    background:#eee;
   }
-  .active {
-    border-top-color: #ffa500;
-    background: #fff;
+
+  .active{
+    border-top-color: orange;
+    background:#fff;
   }
-  i {
-    margin-right: 5px;
+
+  i{
+    margin-right:5px;
     font-size: 18px;
-    &:first-child {
-      font-size: 16px;
+
+    &:first-child{
+      font-size:16px;
     }
   }
 }
 
-.search-form-content {
-  padding: 15px 50px 15px 15px;
+.search-form-content{
+  padding:15px 50px 15px 15px;
   position: relative;
-  .el-autocomplete {
+
+  .el-autocomplete{
     width: 100%;
   }
 }
 
-.reverse {
-  position: absolute;
+.reverse{
+  position:absolute;
   top: 35px;
-  right: 15px;
+  right:15px;
 
-  &:after,
-  &:before {
+  &:after,&:before{
+      display: block;
+      content: "";
+      position: absolute;
+      left:-35px;
+      width:25px;
+      height:1px;
+      background:#ccc;
+  }
+
+  &:after{
+      top:0;
+    }
+
+    &:before{
+      top:60px;
+    }
+
+  span{
     display: block;
-    content: "";
-    position: absolute;
-    left: -35px;
-    width: 25px;
-    height: 1px;
-    background: #ccc;
-  }
-  &:after {
-    top: 0;
-  }
-  &:before {
-    top: 60px;
-  }
-  span {
-    display: block;
-    position: absolute;
+    position:absolute;
     top: 20px;
-    right: 0;
-    font-size: 12px;
+    right:0;
+    font-size:12px;
     background: #999;
-    color: #fff;
-    width: 20px;
-    height: 20px;
+    color:#fff;
+    width:20px;
+    height:20px;
     line-height: 18px;
     text-align: center;
     border-radius: 2px;
     cursor: pointer;
 
-    &:after,
-    &:before {
+    &:after,&:before{
       display: block;
       content: "";
       position: absolute;
-      left: 10px;
-      height: 20px;
-      background: #ccc;
+      left:10px;
+      width:1px;
+      height:20px;
+      background:#ccc;
     }
-    &:after {
-      top: -20px;
+
+    &:after{
+      top:-20px;
     }
-    &:before {
-      top: 20px;
+
+    &:before{
+      top:20px;
     }
   }
 }

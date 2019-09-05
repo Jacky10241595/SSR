@@ -71,7 +71,15 @@ export default {
   },
   methods: {
     //tab切换时触发
-    handleSearchTab(item, index) {},
+    handleSearchTab(item, index) {
+      if(index===1){
+        this.$confirm('暂不支持往返','提示',{
+          confirmButtonText:'确定',
+          showCancelButton:false,
+          type:'warning'
+        })
+      }
+    },
 
     // 出发城市输入框获得焦点时触发
     // value:选中的值; cb:回调函数,接收要展示的列表
@@ -143,7 +151,14 @@ export default {
     },
 
     // 出发与目标城市切换时触发
-    handleReverse() {},
+    handleReverse() {
+      const { departCity, departCode, destCity, destCode }=this.form;
+      // 交叉赋值
+      this.form.departCity=destCity;
+      this.form.departCode=destCode;
+      this.form.destCity=departCity;
+      this.form.destCode=departCode;
+    },
 
     // 提交表单时触发
     handleSubmit() {

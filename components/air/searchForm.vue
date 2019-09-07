@@ -23,6 +23,7 @@
           :fetch-suggestions="queryDepartSearch"
           @select="handleDepartSelect"
           class="el-autocomplete"
+          @blur="handleDepartBlur"
           v-model="form.departCity"
         ></el-autocomplete>
       </el-form-item>
@@ -32,6 +33,7 @@
           :fetch-suggestions="queryDestSearch"
           @select="handleDestSelect"
           class="el-autocomplete"
+          @blur="handleDestBlur"
           v-model="form.destCity"
         ></el-autocomplete>
       </el-form-item>
@@ -66,7 +68,8 @@ export default {
         destCode: "", // 到达城市代码
         departDate: "" // 日期
       },
-      currentTab: 0
+      departData:[], // 存储后台返回的出发城市数组
+      destData:[] // 存储后台返回的到达城市数组
     };
   },
   methods: {
@@ -81,25 +84,34 @@ export default {
       }
     },
 
+    // 出发城市输入框失去焦点时触发
+    handleDepartBlur(){
+      this.form.departCity=this.departData[0]?this.departData[0].value:'';
+      this.form.departCode=this.departData[0]?this.departData[0].sort:'';
+    },
+    // 到达城市输入框失去焦点时触发
+    handleDestBlur(){
+      this.form.destCity=this.destData[0]?this.destData[0].value:'';
+      this.form.destCode=this.destData[0]?this.destData[0].sort:'';
+    },
+
     // 出发城市输入框获得焦点时触发
     // value:选中的值; cb:回调函数,接收要展示的列表
     async queryDepartSearch(value, cb) {
       const arr = await this.querySearchAsync(value);
       if (arr.length > 0) {
-        // 用户不在下拉列表中选择,就默认选中第一项
-        this.form.departCity = arr[0].value;
-        this.form.departCode = arr[0].sort;
+        // 把转换后的数组赋值给data
+        this.departData=arr;
       }
       cb(arr);
     },
 
-    // 目标城市输入框获得焦点时触发
+    // 到达城市输入框获得焦点时触发
     async queryDestSearch(value, cb) {
       const arr = await this.querySearchAsync(value);
       if (arr.length > 0) {
-        // 用户不在下拉列表中选择,就默认选中第一项
-        this.form.destCity = arr[0].value;
-        this.form.destCode = arr[0].sort;
+        // 把转换后的数组赋值给data
+        this.destData=arr;
       }
       cb(arr);
     },
@@ -139,7 +151,7 @@ export default {
       this.form.departCode = item.sort;
     },
 
-    // 目标城市下拉选择时触发
+    // 到达城市下拉选择时触发
     handleDestSelect(item) {
       this.form.destCity = item.value;
       this.form.destCode = item.sort;

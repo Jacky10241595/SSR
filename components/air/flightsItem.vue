@@ -1,6 +1,6 @@
 <template>
   <div class="flight-item">
-    <div>
+    <div @click="handleShowRecommend">
       <!-- 显示的机票信息 -->
       <el-row type="flex" align="middle" class="flight-info">
         <el-col :span="6">
@@ -28,7 +28,7 @@
         </el-col>
       </el-row>
     </div>
-    <div class="flight-recommend">
+    <div class="flight-recommend" v-if="showRecommend">
       <!-- 隐藏的座位信息列表 -->
       <el-row type="flex" justify="space-between" align="middle">
         <el-col :span="4">低价推荐</el-col>
@@ -59,6 +59,11 @@
 
 <script>
 export default {
+    data() {
+        return {
+            showRecommend:false //列表默认收起
+        }
+    },
   props: {
     // 数据
     data: {
@@ -84,6 +89,13 @@ export default {
       }
       //得到相差时间
       return `${Math.floor(dis/60)}时${dis%60}分`
+    }
+  },
+
+  methods:{
+    //   控制推荐列表的展开收起
+    handleShowRecommend(){
+        this.showRecommend=!this.showRecommend
     }
   }
 };

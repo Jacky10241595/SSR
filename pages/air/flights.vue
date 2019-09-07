@@ -15,7 +15,7 @@
 
                 <!-- 航班信息 -->
                 <div>
-
+<FlightsItem/>
                 </div>
             </div>
 
@@ -28,6 +28,7 @@
 </template>
 <script>
 import FlightsListHead from '@/components/air/flightsListHead.vue'
+import FlightsItem from '@/components/air/flightsItem.vue'
 export default {
     data() {
         return {
@@ -35,7 +36,8 @@ export default {
         }
     },
     components:{
-        FlightsListHead
+        FlightsListHead,
+        FlightsItem
     }
 }
 </script>

@@ -14,7 +14,7 @@
               <span>{{data.org_airport_name}}{{data.org_airport_quay}}</span>
             </el-col>
             <el-col :span="8" class="flight-time">
-              <span>2时20分</span>
+              <span>{{rankTime}}</span>
             </el-col>
             <el-col :span="8" class="flight-airport">
               <strong>{{data.arr_time}}</strong>
@@ -65,6 +65,25 @@ export default {
       type: Object,
       // 默认是空数组
       default: {}
+    }
+  },
+
+  //计算相差时间
+  computed: {
+    rankTime() {
+      //转换为分钟
+      const dep = this.data.dep_time.split(":");
+      const arr = this.data.arr_time.split(":");
+      const depVal = dep[0] * 60 + +dep[1];
+      const arrVal = arr[0] * 60 + +arr[1];
+      //   到达时间减去出发时间得到分钟
+      let dis = arrVal - depVal;
+      // 如果到达时间是第二天凌晨,则需要加24小时
+      if (dis < 0) {
+        dis = arrVal + 24 * 60 - depVal;
+      }
+      //得到相差时间
+      return `${Math.floor(dis/60)}时${dis%60}分`
     }
   }
 };

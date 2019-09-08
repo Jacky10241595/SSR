@@ -4,7 +4,7 @@
     <el-row type="flex" class="filters-top" justify="space-between" align="middle">
       <el-col :span="8">
         单程：
-        {{data.info.departCity}}-{{data.info.destCity}}
+        {{data.info.departCity}} - {{data.info.destCity}}
         /
         {{data.info.departDate}}
       </el-col>
@@ -50,7 +50,7 @@
       </el-col>
     </el-row>
     <div class="filter-cancel">
-      筛选:
+      筛选 :
       <el-button type="primary" round plain size="mini" @click="handleFiltersCancel">撤销</el-button>
     </div>
   </div>

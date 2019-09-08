@@ -47,7 +47,7 @@
             </el-col>
             <el-col :span="5" class="price">￥{{item.org_settle_price}}</el-col>
             <el-col :span="3" class="choose-button">
-              <el-button type="warning" size="mini">选定</el-button>
+              <el-button type="warning" size="mini" @click="handleChoose(data.id,item.seat_xid)">选定</el-button>
               <p>剩余：{{item.discount}}</p>
             </el-col>
           </el-row>
@@ -59,11 +59,11 @@
 
 <script>
 export default {
-    data() {
-        return {
-            showRecommend:false //列表默认收起
-        }
-    },
+  data() {
+    return {
+      showRecommend: false //列表默认收起
+    };
+  },
   props: {
     // 数据
     data: {
@@ -88,14 +88,25 @@ export default {
         dis = arrVal + 24 * 60 - depVal;
       }
       //得到相差时间
-      return `${Math.floor(dis/60)}时${dis%60}分`
+      return `${Math.floor(dis / 60)}时${dis % 60}分`;
     }
   },
 
-  methods:{
+  methods: {
     //   控制推荐列表的展开收起
-    handleShowRecommend(){
-        this.showRecommend=!this.showRecommend
+    handleShowRecommend() {
+      this.showRecommend = !this.showRecommend;
+    },
+
+    // 选定按钮触发跳转
+    handleChoose(id, seatId) {
+      this.$router.push({
+        path: "/air/order",
+        query: {
+          id,
+          seat_xid: seatId
+        }
+      });
     }
   }
 };

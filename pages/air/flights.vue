@@ -4,8 +4,10 @@
       <!-- 顶部过滤列表 -->
       <div class="flights-content">
         <!-- 过滤条件 -->
+        <!-- data是不会被修改的列表数据 -->
+        <!-- setDataList用于修改过滤后的数组列表 -->
         <div>
-          <FlightsFilters :data="flightsData" />
+          <FlightsFilters :data="cacheFlightsData" @setDataList="setDataList" />
         </div>
 
         <!-- 航班头部布局 -->
@@ -60,6 +62,11 @@ export default {
         info: {},
         options: {}
       },
+      cacheFlightsData: {
+        flights: [],
+        info: {},
+        options: {}
+      },
       dataList: [],
       pageIndex: 1, //当前页数
       pageSize: 5 //显示条数
@@ -78,12 +85,24 @@ export default {
         params: this.$route.query
       }).then(res => {
         this.flightsData = res.data;
-        // this.dataList = this.flightsData.flights;
-        this.setDataList(); //初始化dataList数据,获取1-10条
+
+        // 缓存一份新的列表数据数据，这个列表不会被修改
+        // 而flightsData会被修改
+        this.cacheFlightsData = { ...res.data };
+        this.setDataList();
       });
     },
+
     // 设置dataList数据
-    setDataList() {
+    // arr是展示的新数据，该方法将会传递给过滤组件使用
+    setDataList(arr) {
+      // 如果有新数据从第一页开始显示
+      if (arr) {
+        this.pageIndex = 1;
+        this.flightsData.flights = arr;
+        this.flightsData.total = arr.length;
+      }
+
       const start = (this.pageIndex - 1) * this.pageSize;
       const end = start + this.pageSize;
       this.dataList = this.flightsData.flights.slice(start, end);

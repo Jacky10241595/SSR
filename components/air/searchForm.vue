@@ -39,8 +39,13 @@
       </el-form-item>
       <el-form-item label="出发时间">
         <!-- change:用户确认选择日期时触发 -->
-        <el-date-picker type="date" placeholder="请选择日期" style="width:100%;" @change="handleDate"
-        v-model="form.departDate"></el-date-picker>
+        <el-date-picker
+          type="date"
+          placeholder="请选择日期"
+          style="width:100%;"
+          @change="handleDate"
+          v-model="form.departDate"
+        ></el-date-picker>
       </el-form-item>
       <el-form-item label>
         <el-button style="width:100%;" type="primary" icon="el-icon-search" @click="handleSubmit">搜索</el-button>
@@ -68,31 +73,31 @@ export default {
         destCode: "", // 到达城市代码
         departDate: "" // 日期
       },
-      departData:[], // 存储后台返回的出发城市数组
-      destData:[] // 存储后台返回的到达城市数组
+      departData: [], // 存储后台返回的出发城市数组
+      destData: [] // 存储后台返回的到达城市数组
     };
   },
   methods: {
     //tab切换时触发
     handleSearchTab(item, index) {
-      if(index===1){
-        this.$confirm('暂不支持往返','提示',{
-          confirmButtonText:'确定',
-          showCancelButton:false,
-          type:'warning'
-        })
+      if (index === 1) {
+        this.$confirm("暂不支持往返", "提示", {
+          confirmButtonText: "确定",
+          showCancelButton: false,
+          type: "warning"
+        });
       }
     },
 
     // 出发城市输入框失去焦点时触发
-    handleDepartBlur(){
-      this.form.departCity=this.departData[0]?this.departData[0].value:'';
-      this.form.departCode=this.departData[0]?this.departData[0].sort:'';
+    handleDepartBlur() {
+      this.form.departCity = this.departData[0] ? this.departData[0].value : "";
+      this.form.departCode = this.departData[0] ? this.departData[0].sort : "";
     },
     // 到达城市输入框失去焦点时触发
-    handleDestBlur(){
-      this.form.destCity=this.destData[0]?this.destData[0].value:'';
-      this.form.destCode=this.destData[0]?this.destData[0].sort:'';
+    handleDestBlur() {
+      this.form.destCity = this.destData[0] ? this.destData[0].value : "";
+      this.form.destCode = this.destData[0] ? this.destData[0].sort : "";
     },
 
     // 出发城市输入框获得焦点时触发
@@ -101,7 +106,7 @@ export default {
       const arr = await this.querySearchAsync(value);
       if (arr.length > 0) {
         // 把转换后的数组赋值给data
-        this.departData=arr;
+        this.departData = arr;
       }
       cb(arr);
     },
@@ -111,7 +116,7 @@ export default {
       const arr = await this.querySearchAsync(value);
       if (arr.length > 0) {
         // 把转换后的数组赋值给data
-        this.destData=arr;
+        this.destData = arr;
       }
       cb(arr);
     },
@@ -164,12 +169,12 @@ export default {
 
     // 出发与目标城市切换时触发
     handleReverse() {
-      const { departCity, departCode, destCity, destCode }=this.form;
+      const { departCity, departCode, destCity, destCode } = this.form;
       // 交叉赋值
-      this.form.departCity=destCity;
-      this.form.departCode=destCode;
-      this.form.destCity=departCity;
-      this.form.destCode=departCode;
+      this.form.departCity = destCity;
+      this.form.departCode = destCode;
+      this.form.destCity = departCity;
+      this.form.destCode = departCode;
     },
 
     // 提交表单时触发
@@ -207,12 +212,18 @@ export default {
       });
 
       //不通过验证,终止执行
-      if(!valid) return;
+      if (!valid) return;
+
+      // 添加到本地存储
+      const airs = JSON.parse(localStorage.getItem("airs") || `[]`);
+      airs.push(this.form);
+      localStorage.setItem("airs", JSON.stringify(airs));
+
       // 跳转到机票首页
       this.$router.push({
-        path:'/air/flights',
-        query:this.form
-      })
+        path: "/air/flights",
+        query: this.form
+      });
     }
   },
   mounted() {}

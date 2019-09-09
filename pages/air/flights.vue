@@ -124,6 +124,13 @@ export default {
   },
   mounted() {
     this.getData();
+  },
+
+  // 监听路由的变化
+  watch: {
+    $route() {
+      this.getData();
+    }
   }
 };
 </script>

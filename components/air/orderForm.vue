@@ -30,8 +30,12 @@
     <div class="air-column">
       <h2>保险</h2>
       <div>
-        <div class="insurance-item">
-          <el-checkbox label="航空意外险：￥30/份×1  最高赔付260万" border></el-checkbox>
+        <div class="insurance-item" v-for="(item,index) in data.insurances" :key="index">
+          <el-checkbox
+            label="`${item.type}：￥${item.price}/份×${users.length}  最高赔付${item.compensation}`"
+            @change="handleInsurance(item.id)"
+            border
+          ></el-checkbox>
         </div>
       </div>
     </div>
@@ -41,11 +45,11 @@
       <div class="contact">
         <el-form label-width="60px">
           <el-form-item label="姓名">
-            <el-input></el-input>
+            <el-input v-model="contactName"></el-input>
           </el-form-item>
 
           <el-form-item label="手机">
-            <el-input placeholder="请输入内容">
+            <el-input placeholder="请输入内容" v-model="contactPhone">
               <template slot="append">
                 <el-button @click="handleSendCaptcha">发送验证码</el-button>
               </template>
@@ -53,7 +57,7 @@
           </el-form-item>
 
           <el-form-item label="验证码">
-            <el-input></el-input>
+            <el-input v-model="captcha"></el-input>
           </el-form-item>
         </el-form>
         <el-button type="warning" class="submit" @click="handleSubmit">提交订单</el-button>
@@ -71,8 +75,21 @@ export default {
           username: "",
           id: ""
         }
-      ]
+      ],
+      //新增表单的字段
+      insurances: [], //保险数据
+      contactName: "", //联系人名字
+      contactPhone: "", //联系人电话
+      invoice: false, //发票
+      captcha: 000000 //验证码
     };
+  },
+  props: {
+    //接收机票信息
+    data: {
+      type: Object,
+      default: {}
+    }
   },
   methods: {
     // 添加乘机人
@@ -81,15 +98,38 @@ export default {
     },
 
     // 移除乘机人
-    handleDeleteUse(index) {
-        this.users.splice(index,1)
+    handleDeleteUser(index) {
+      this.users.splice(index, 1);
+    },
+
+    // 选择保险
+    handleInsurance(id) {
+      //存在就去除,默认不选中买保险
+      if (this.insurances.indexOf(id) > -1) {
+        let arr = this.insurances.slice(0);
+        arr.splice(this.insurances.indexOf(id), 1);
+        this.insurances = arr;
+      } else {
+        this.insurances = [...new Set([...this.insurances, id])];
+      }
     },
 
     // 发送手机验证码
     handleSendCaptcha() {},
 
     // 提交订单
-    handleSubmit() {}
+    handleSubmit() {
+      const orderData = {
+        users: this.users,
+        insurances: this.insurances,
+        contactName: this.contactName,
+        contactPhone: this.contactPhone,
+        invoice: this.invoice,
+        captcha: this.captcha,
+        seat_xid: this.data.seat_infos.seat_xid,
+        air: this.data.id
+      };
+    }
   }
 };
 </script>

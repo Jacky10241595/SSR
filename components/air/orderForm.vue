@@ -81,7 +81,7 @@ export default {
       contactName: "", //联系人名字
       contactPhone: "", //联系人电话
       invoice: false, //发票
-      captcha: 000000 //验证码
+      captcha: '000000' //验证码
     };
   },
   props: {
@@ -115,7 +115,31 @@ export default {
     },
 
     // 发送手机验证码
-    handleSendCaptcha() {},
+    handleSendCaptcha() {
+      if(!this.contactPhone){
+        this.$confirm('手机号不能为空','提示',{
+          confirmButtonText:'确定',
+          showCancelButton:false,
+          type:'warning'
+        })
+        return
+      }
+
+      this.$axios({
+        url:`/captchas`,
+        method:'POST',
+        data:{
+          tel:this.contactPhone
+        }
+      }).then(res=>{
+        const{code}=res.data;
+        this.$confirm(`模拟手机验证码为:${code}`,'提示',{
+          confirmButtonText:'确定',
+          showCancelButton:false,
+          type:'warning'
+        })
+      })
+    },
 
     // 提交订单
     handleSubmit() {

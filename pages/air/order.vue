@@ -31,7 +31,7 @@ export default {
     mounted () {
         const {query} =this.$route;
         this.$axios({
-            url:'airs/${query..id}',
+            url:'airs/${query.id}',
             params:{seat_xid:query.seat_xid}
         }).then(res=>{
             this.infoData=res.data

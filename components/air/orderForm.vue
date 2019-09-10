@@ -1,7 +1,7 @@
 <template>
   <div class="main">
     <div class="air-column">
-      <h2>剩机人</h2>
+      <h2>乘机人</h2>
       <el-form class="member-info">
         <div class="member-info-item" v-for="(item,index) in users" :key="index">
           <el-form-item label="乘机人类型">
@@ -32,7 +32,7 @@
       <div>
         <div class="insurance-item" v-for="(item,index) in data.insurances" :key="index">
           <el-checkbox
-            label="`${item.type}：￥${item.price}/份×${users.length}  最高赔付${item.compensation}`"
+            :label="`${item.type}：￥${item.price}/份×${users.length}  最高赔付${item.compensation}`"
             @change="handleInsurance(item.id)"
             border
           ></el-checkbox>
@@ -81,7 +81,7 @@ export default {
       contactName: "", //联系人名字
       contactPhone: "", //联系人电话
       invoice: false, //发票
-      captcha: '000000' //验证码
+      captcha: "000000" //验证码
     };
   },
   props: {
@@ -110,35 +110,45 @@ export default {
         arr.splice(this.insurances.indexOf(id), 1);
         this.insurances = arr;
       } else {
+        // 不存在添加到insurances
         this.insurances = [...new Set([...this.insurances, id])];
       }
     },
 
     // 发送手机验证码
     handleSendCaptcha() {
-      if(!this.contactPhone){
-        this.$confirm('手机号不能为空','提示',{
-          confirmButtonText:'确定',
-          showCancelButton:false,
-          type:'warning'
-        })
-        return
+      if (!this.contactPhone) {
+        this.$confirm("手机号不能为空", "提示", {
+          confirmButtonText: "确定",
+          showCancelButton: false,
+          type: "warning"
+        });
+        return;
+      }
+
+      if (this.contactPhone.length !== 11) {
+        this.$confirm("手机号码格式错误", "提示", {
+          confirmButtonText: "确定",
+          showCancelButton: false,
+          type: "warning"
+        });
+        return;
       }
 
       this.$axios({
-        url:`/captchas`,
-        method:'POST',
-        data:{
-          tel:this.contactPhone
+        url: `/captchas`,
+        method: "POST",
+        data: {
+          tel: this.contactPhone
         }
-      }).then(res=>{
-        const{code}=res.data;
-        this.$confirm(`模拟手机验证码为:${code}`,'提示',{
-          confirmButtonText:'确定',
-          showCancelButton:false,
-          type:'warning'
-        })
-      })
+      }).then(res => {
+        const { code } = res.data;
+        this.$confirm(`模拟手机验证码为:${code}`, "提示", {
+          confirmButtonText: "确定",
+          showCancelButton: false,
+          type: "warning"
+        });
+      });
     },
 
     // 提交订单
@@ -153,6 +163,36 @@ export default {
         seat_xid: this.data.seat_infos.seat_xid,
         air: this.data.id
       };
+      const {
+        user: { userInfo }
+      } = this.$store.state;
+      this.$message({
+        message: "正在生成订单,hold on,please",
+        type: "success"
+      });
+      this.$axios({
+        url: `/airorders`,
+        method: "POST",
+        data: orderData,
+        headers: {
+          Authorization: `Bearer ${userInfo.token || "NO TOKEN"}`
+        }
+      })
+        .then(res => {
+          //跳转至付款页
+          this.$router.push({
+            path: "/air/pay"
+          });
+        })
+        .catch(err => {
+          const { message } = err.response.data;
+          // 警告提示
+          this.$confirm(message, "提示", {
+            confirmButtonText: "确定",
+            showCancelButton: false,
+            type: "warning"
+          });
+        });
     }
   }
 };

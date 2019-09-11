@@ -24,7 +24,29 @@
 </template>
 
 <script>
-export default {};
+import QRCode from "qrcode";
+export default {
+  mounted() {
+    setTimeout(() => {
+      // 请求订单详情
+      this.$axios({
+        url: "/airorders/" + this.$route.query.id,
+        // 给接口单独加请求头
+        headers: {
+          Authorization: `Bearer ${this.$store.state.user.userInfo.token}`
+        }
+      }).then(res => {
+        //获取到convas节点元素
+        const canvas = document.getElementById("qrcode-stage");
+        // 要生成的二维码的连接
+        const { code_url } = res.data.payInfo;
+        QRCode.toCanvas(canvas, code_url, {
+          width: 200
+        });
+      });
+    },10);
+  }
+};
 </script>
 
 <style scoped lang="less">
